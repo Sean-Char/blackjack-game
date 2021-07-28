@@ -15,8 +15,13 @@ let sumEl = document.getElementById("sum-el")
 let cardsEl = document.getElementById("cards-el")
 let playerEl = document.getElementById("player-el")
 let betEl = document.getElementById("bet-el")
+let betBtn = document.getElementById("bet-btn")
 
 playerEl.textContent = player.name + ": $" + player.chips
+
+if (betSum === 0) {
+    betBtn.disabled = true
+}
 
 function getRandomCard() {
     let randomNumber = Math.floor( Math.random()*13 ) + 1
@@ -29,7 +34,7 @@ function getRandomCard() {
     }
 }
 
-function startGame() {
+document.getElementById("start-btn").addEventListener("click", () => {
     isAlive = true
     let firstCard = getRandomCard()
     let secondCard = getRandomCard()
@@ -37,15 +42,17 @@ function startGame() {
     sum = firstCard + secondCard
     betSum = 5
     betTotal -= 5
+    betBtn.disabled = false
     renderGame()
-}
+})
+
 
 function renderGame() {
     cardsEl.textContent = "Cards: "
     for (let i = 0; i < cards.length; i++) {
         cardsEl.textContent += cards[i] + " "
     }
-    
+
     sumEl.textContent = "Sum: " + sum
 
     betEl.textContent = "Bet: $" + betSum
@@ -64,16 +71,16 @@ function renderGame() {
     messageEl.textContent = message
 }
 
-function newCard() {
+document.getElementById("new-card-btn").addEventListener("click", () => {
     if (isAlive === true && hasBlackJack === false) {
         let card = getRandomCard()
         sum += card
         cards.push(card)
         renderGame()        
     }
-}
+})
 
-function betChips() {
+betBtn.addEventListener("click", () => {
     if (betTotal !== 0) {
         betSum += 5
         betEl.textContent = "Bet: $" + betSum
@@ -82,5 +89,10 @@ function betChips() {
     } else {
         playerEl.textContent = "Maxed Out"
     }
+})
 
-}
+
+/*  TO DO:
+    add money if win 
+    subtract money if lose
+ */
